@@ -1,0 +1,6 @@
+CREATE TABLE proprietario (
+	id bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(70) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    telefone VARCHAR(20) NOT NULL
+);
