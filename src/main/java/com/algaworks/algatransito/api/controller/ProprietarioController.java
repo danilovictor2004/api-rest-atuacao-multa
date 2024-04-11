@@ -2,6 +2,7 @@ package com.algaworks.algatransito.api.controller;
 
 import com.algaworks.algatransito.domain.model.Proprietario;
 import com.algaworks.algatransito.domain.repository.ProprietarioRepository;
+import com.algaworks.algatransito.domain.services.RegistrosProprietarioServices;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import java.util.List;
 public class ProprietarioController {
 
     private final ProprietarioRepository proprietarioRepository;
+    private final RegistrosProprietarioServices proprietarioServices;
 
     @GetMapping
     public List<Proprietario> listar() {
@@ -32,7 +34,7 @@ public class ProprietarioController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Proprietario adicionar(@Valid @RequestBody Proprietario proprietario) {
-        return proprietarioRepository.save(proprietario);
+        return proprietarioServices.salvar(proprietario);
     }
 
     @PutMapping("/{proprietarioId}")
@@ -43,7 +45,7 @@ public class ProprietarioController {
         }
 
         proprietario.setId(proprietarioId);
-        Proprietario proprietarioAtualizado = proprietarioRepository.save(proprietario);
+        Proprietario proprietarioAtualizado = proprietarioServices.salvar(proprietario);
         return ResponseEntity.ok(proprietarioAtualizado);
 
     }
@@ -54,7 +56,7 @@ public class ProprietarioController {
             return ResponseEntity.notFound().build();
         }
 
-        proprietarioRepository.deleteById(proprietarioId);
+        proprietarioServices.excluir(proprietarioId);
 
         return ResponseEntity.noContent().build();
     }
