@@ -4,6 +4,7 @@ import com.algaworks.algatransito.domain.Exception.NegocioException;
 import com.algaworks.algatransito.domain.model.Veiculo;
 import com.algaworks.algatransito.domain.repository.VeiculoRepository;
 import com.algaworks.algatransito.domain.services.RegistrosVeiculoServices;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public class VeiculoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Veiculo cadastrar (@RequestBody Veiculo veiculo) {
+    public Veiculo cadastrar (@Valid @RequestBody Veiculo veiculo) {
         return registrosVeiculoServices.cadastrar(veiculo);
     }
 
