@@ -4,7 +4,6 @@ import com.algaworks.algatransito.domain.Exception.NegocioException;
 import com.algaworks.algatransito.domain.model.Proprietario;
 import com.algaworks.algatransito.domain.model.StatusVeiculo;
 import com.algaworks.algatransito.domain.model.Veiculo;
-import com.algaworks.algatransito.domain.repository.ProprietarioRepository;
 import com.algaworks.algatransito.domain.repository.VeiculoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
