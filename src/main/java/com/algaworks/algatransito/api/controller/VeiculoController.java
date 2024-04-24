@@ -21,27 +21,31 @@ public class VeiculoController {
     private final RegistrosVeiculoServices registrosVeiculoServices;
 
     @GetMapping
-    public List<Veiculo> listar() {
-        return veiculoRepository.findAll();
+    public List<VeiculoModel> listar() {
+        return veiculoRepository.findAll()
+                .stream()
+                .map(VeiculoController::getVeiculoModel).toList();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<VeiculoModel> buscar(@PathVariable Long id) {
         return veiculoRepository.findById(id)
-                .map(veiculo -> {
-                    var veiculoModel = new VeiculoModel();
-                    veiculoModel.setId(veiculo.getId());
-                    veiculoModel.setNomeProprietario(veiculo.getProprietario().getNome());
-                    veiculoModel.setMarca(veiculo.getMarca());
-                    veiculoModel.setModelo(veiculo.getModelo());
-                    veiculoModel.setPlaca(veiculo.getPlaca());
-                    veiculoModel.setStatus(veiculo.getStatus());
-                    veiculoModel.setDataCadastro(veiculo.getDataCadastro());
-                    veiculoModel.setDataApreensao(veiculo.getDataApreensao());
-                    return  veiculoModel;
-                })
+                .map(VeiculoController::getVeiculoModel)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    private static VeiculoModel getVeiculoModel(Veiculo veiculo) {
+        var veiculoModel = new VeiculoModel();
+        veiculoModel.setId(veiculo.getId());
+        veiculoModel.setNomeProprietario(veiculo.getProprietario().getNome());
+        veiculoModel.setMarca(veiculo.getMarca());
+        veiculoModel.setModelo(veiculo.getModelo());
+        veiculoModel.setPlaca(veiculo.getPlaca());
+        veiculoModel.setStatus(veiculo.getStatus());
+        veiculoModel.setDataCadastro(veiculo.getDataCadastro());
+        veiculoModel.setDataApreensao(veiculo.getDataApreensao());
+        return veiculoModel;
     }
 
     @PostMapping
