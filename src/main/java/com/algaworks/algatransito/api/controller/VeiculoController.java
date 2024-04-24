@@ -1,5 +1,6 @@
 package com.algaworks.algatransito.api.controller;
 
+import com.algaworks.algatransito.api.model.VeiculoModel;
 import com.algaworks.algatransito.domain.model.Veiculo;
 import com.algaworks.algatransito.domain.repository.VeiculoRepository;
 import com.algaworks.algatransito.domain.services.RegistrosVeiculoServices;
@@ -25,8 +26,20 @@ public class VeiculoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Veiculo> buscar(@PathVariable Long id) {
+    public ResponseEntity<VeiculoModel> buscar(@PathVariable Long id) {
         return veiculoRepository.findById(id)
+                .map(veiculo -> {
+                    var veiculoModel = new VeiculoModel();
+                    veiculoModel.setId(veiculo.getId());
+                    veiculoModel.setNomeProprietario(veiculo.getProprietario().getNome());
+                    veiculoModel.setMarca(veiculo.getMarca());
+                    veiculoModel.setModelo(veiculo.getModelo());
+                    veiculoModel.setPlaca(veiculo.getPlaca());
+                    veiculoModel.setStatus(veiculo.getStatus());
+                    veiculoModel.setDataCadastro(veiculo.getDataCadastro());
+                    veiculoModel.setDataApreensao(veiculo.getDataApreensao());
+                    return  veiculoModel;
+                })
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
