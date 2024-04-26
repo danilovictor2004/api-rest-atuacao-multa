@@ -1,4 +1,4 @@
-package com.algaworks.algatransito.exceptionhandler;
+package com.algaworks.algatransito.api.exceptionhandler;
 
 import com.algaworks.algatransito.domain.Exception.NegocioException;
 import lombok.AllArgsConstructor;
