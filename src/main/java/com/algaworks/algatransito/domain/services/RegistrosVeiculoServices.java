@@ -41,4 +41,9 @@ public class RegistrosVeiculoServices {
         return veiculoRepository.save(novoVeiculo);
     }
 
+    public Veiculo buscar(Long idVeiculo) {
+        return veiculoRepository.findById(idVeiculo)
+                .orElseThrow(() -> new NegocioException("Veículo não encontrado"));
+    }
+
 }
