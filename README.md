@@ -6,10 +6,6 @@ Este projeto consiste em uma aplicação de autuação de multas veiculares dese
 
 - **Registro de Multas:** Permite o registro de novas multas, incluindo informações como placa do veículo, descrição da infração, valor da multa, entre outros.
 
-- **Consulta de Multas:** Possibilita a consulta de multas por diversos critérios, como placa do veículo, número da infração, data de aplicação, entre outros.
-
-- **Atualização de Multas:** Permite a atualização de informações de multas existentes, como status de pagamento, valor da multa, entre outros.
-
 - **Exclusão de Multas:** Permite a exclusão de multas do sistema, caso necessário.
 
 ## Tecnologias Utilizadas
