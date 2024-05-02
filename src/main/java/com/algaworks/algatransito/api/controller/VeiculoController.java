@@ -1,8 +1,11 @@
 package com.algaworks.algatransito.api.controller;
 
-import com.algaworks.algatransito.domain.Exception.NegocioException;
+import com.algaworks.algatransito.api.assembler.VeiculoAssembler;
+import com.algaworks.algatransito.api.model.VeiculoModel;
+import com.algaworks.algatransito.api.model.input.VeiculoInput;
 import com.algaworks.algatransito.domain.model.Veiculo;
 import com.algaworks.algatransito.domain.repository.VeiculoRepository;
+import com.algaworks.algatransito.domain.services.ApreensaoVeiculoService;
 import com.algaworks.algatransito.domain.services.RegistrosVeiculoServices;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -19,28 +22,41 @@ public class VeiculoController {
 
     private final VeiculoRepository veiculoRepository;
     private final RegistrosVeiculoServices registrosVeiculoServices;
+    private final ApreensaoVeiculoService apreensaoVeiculoService;
+    private final VeiculoAssembler veiculoAssembler;
 
     @GetMapping
-    public List<Veiculo> listar() {
-        return veiculoRepository.findAll();
+    public List<VeiculoModel> listar() {
+        return veiculoAssembler.toCollectionModel(veiculoRepository.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Veiculo> buscar(@PathVariable Long id) {
+    public ResponseEntity<VeiculoModel> buscar(@PathVariable Long id) {
         return veiculoRepository.findById(id)
+                .map(veiculoAssembler::toModel)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Veiculo cadastrar (@Valid @RequestBody Veiculo veiculo) {
-        return registrosVeiculoServices.cadastrar(veiculo);
+    public VeiculoModel cadastrar (@Valid @RequestBody VeiculoInput veiculoInput) {
+        Veiculo novoVeiculo = veiculoAssembler.toEntity(veiculoInput);
+        Veiculo veiculoCadastrado = registrosVeiculoServices.cadastrar(novoVeiculo);
+
+        return veiculoAssembler.toModel(veiculoCadastrado);
     }
 
-    @ExceptionHandler(NegocioException.class)
-    public ResponseEntity<String> capturar(NegocioException e) {
-        return ResponseEntity.badRequest().body(e.getMessage());
+    @PutMapping("/{veiculoId}/apreensao")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void apreender(@PathVariable Long veiculoId) {
+        apreensaoVeiculoService.apreender(veiculoId);
+    }
+
+    @DeleteMapping("/{veiculoId}/apreensao")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removerApreensao(@PathVariable Long veiculoId) {
+        apreensaoVeiculoService.removerApreensao(veiculoId);
     }
 
 }

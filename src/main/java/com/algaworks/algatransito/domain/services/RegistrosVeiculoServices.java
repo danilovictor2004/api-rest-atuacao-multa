@@ -1,5 +1,6 @@
 package com.algaworks.algatransito.domain.services;
 
+import com.algaworks.algatransito.domain.Exception.EntidadeNaoEncontrada;
 import com.algaworks.algatransito.domain.Exception.NegocioException;
 import com.algaworks.algatransito.domain.model.Proprietario;
 import com.algaworks.algatransito.domain.model.StatusVeiculo;
@@ -9,7 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Service
 @AllArgsConstructor
@@ -36,9 +37,14 @@ public class RegistrosVeiculoServices {
 
         novoVeiculo.setProprietario(proprietario);
         novoVeiculo.setStatus(StatusVeiculo.REGULAR);
-        novoVeiculo.setDataCadastro(LocalDateTime.now());
+        novoVeiculo.setDataCadastro(OffsetDateTime.now());
 
         return veiculoRepository.save(novoVeiculo);
+    }
+
+    public Veiculo buscar(Long idVeiculo) {
+        return veiculoRepository.findById(idVeiculo)
+                .orElseThrow(() -> new EntidadeNaoEncontrada("Veículo não encontrado"));
     }
 
 }
