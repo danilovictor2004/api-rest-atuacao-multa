@@ -4,7 +4,7 @@ Este projeto consiste em uma aplicação de autuação de multas veiculares dese
 
 ## Funcionalidades
 
-- **Registro de Multas:** Permite o registro de novas multas, incluindo informações como placa do veículo, descrição da infração, valor da multa, entre outros.
+- **Registro de Multas:** Permite o registro de novas multas, incluindo informações como ID do veículo, descrição da infração, valor da multa.
 
 - **Exclusão de Multas:** Permite a exclusão de multas do sistema, caso necessário.
 
